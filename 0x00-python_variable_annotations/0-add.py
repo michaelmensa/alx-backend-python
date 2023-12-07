@@ -1,6 +1,7 @@
 #!/usr/bin/ env python3
 '''
-Module: 0 basic annotations - add
+Module: 0 basic annotations - add floats a and b as params
+and return the sum as float
 '''
 
 
