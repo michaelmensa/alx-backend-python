@@ -6,11 +6,11 @@ float as param and returns a function that multiplies a float by multiplier
 from typing import Callable
 
 
-def make_multiplier(multiplier: float) -> Callable[[x: float]: callable]:
+def make_multiplier(multiplier: float) -> Callable[[float], float]:
     '''
     function that returns a function that multiplies a float by multiplier
     '''
-    def multiplier_fuction(x: float) -> float:
+    def multiplier_function(x: float) -> float:
         '''
         function that is going to be called by the make_multiplier funciton
         '''
