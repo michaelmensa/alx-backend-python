@@ -23,3 +23,6 @@ async def measure_runtime() -> float:
             )
 
     return time.time() - start_t
+
+if __name__ == "__main__":
+    print(asyncio.run(measure_runtime()))
