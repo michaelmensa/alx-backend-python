@@ -7,7 +7,7 @@ import random
 from typing import Generator
 
 
-async def async_generator():
+async def async_generator() -> Generator[float, None, None]:
     '''
     coroutine that takes no arguments. will loop 10 times,
     each time, wait asynchronously for 1 sec, then yield a random number
