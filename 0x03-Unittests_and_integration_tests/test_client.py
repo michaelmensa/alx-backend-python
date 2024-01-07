@@ -23,11 +23,8 @@ class TestGithubOrgClient(unittest.TestCase):
         '''
         github_client = GithubOrgClient(org_name)
         result = github_client.org
-
         expected_url = GithubOrgClient.ORG_URL.format(org=org_name)
-
         mock_get_json.assert_called_once_with(expected_url)
-
         self.assertEqual(result, mock_get_json.return_value)
 
 
