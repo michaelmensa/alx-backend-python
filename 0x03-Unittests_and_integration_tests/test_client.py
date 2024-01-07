@@ -9,14 +9,18 @@ from client import GithubOrgClient
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    ''' class to test client.GithubOrgClient '''
+    ''' class to test client.GithubOrgClient
+    '''
+
     @parameterized.expand([
         ('google',),
         ('abc',)
         ])
     @patch('client.get_json')
     def test_org(self, org_name, mock_get_json):
-        ''' method to test client.org '''
+        ''' method to test client.org and returns the correct
+        value
+        '''
         github_client = GithubOrgClient(org_name)
         result = github_client.org
 
