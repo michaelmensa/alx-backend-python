@@ -102,6 +102,18 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         ''' tears down the integration test requirements '''
         cls.get_patcher.stop()
 
+    def test_public_repos(self):
+        ''' test for public_repos '''
+        org_client = GithubOrgClient('testorg')
+        repos = org_client.public_repos()
+        self.assertEqual(repos, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        ''' test for repos with license '''
+        org_client = GithubOrgClient('google')
+        repos = org_client.public_repos(license='apache-2.0')
+        self.assertEqual(repos, self.apache2_repos)
+
 
 class MockResponse():
     ''' class for MockResponse '''
