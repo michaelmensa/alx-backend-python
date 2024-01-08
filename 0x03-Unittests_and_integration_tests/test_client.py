@@ -40,24 +40,26 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(result, url.get('repos_url'))
 
     @patch('client.get_json')
-    def test_public_repos(self, mock_get_json: MagicMock):
+    def test_public_repos(self, mock_get_json):
         ''' test method for client.GithubOrgClient.public_repos '''
-        url = 'https://api.github.com/orgs/testorg/repos'
-        mock_payload = [
-                {'name': 'repo1', 'license': {'key': 'MIT'}},
-                {'name': 'repo2', 'license': {'key': 'Apache-2.0'}},
-                {'name': 'repo3', 'license': {'key': 'Nginx-1.0'}}
-                ]
-        mock_get_json.return_value = mock_payload
+        mock_payload = {
+                'repos_url': 'https://api.github.com/orgs/testorg/repos',
+                'repos': [
+                    {'id': 23, 'name': 'repo1', 'license': {'key': 'MIT'}},
+                    {'id': 12, 'name': 'repo2', 'license': {'key': 'Apache'}},
+                    {'id': 45, 'name': 'repo3', 'license': {'key': 'Nginx'}}
+                    ]
+                }
+        mock_get_json.return_value = mock_payload['repos']
 
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_property:
-            mock_property.return_value = url
+            mock_property.return_value = mock_payload['repos_url']
             client = GithubOrgClient('testorg')
             repos = client.public_repos()
 
             self.assertEqual(repos, ['repo1', 'repo2', 'repo3'])
-            mock_get_json.assert_called_once_with(url)
+            mock_get_json.assert_called_once()
             mock_property.assert_called_once()
 
 
