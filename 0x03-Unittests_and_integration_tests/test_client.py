@@ -3,7 +3,7 @@
 Module test_client: test module for client.py
 '''
 import unittest
-from unittest.mock import Mock, patch, PropertyMock, MagicMock
+from unittest.mock import Mock, patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
