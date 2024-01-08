@@ -4,8 +4,9 @@ Module test_client: test module for client.py
 '''
 import unittest
 from unittest.mock import Mock, patch, PropertyMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -72,6 +73,45 @@ class TestGithubOrgClient(unittest.TestCase):
 
         result = client.has_license(repo, license)
         self.assertEqual(result, expected_result)
+
+
+@parameterized_class([
+    {
+        'org_payload': TEST_PAYLOAD[0][0],
+        'repos_payload': TEST_PAYLOAD[0][1],
+        'expected_repos': TEST_PAYLOAD[0][2],
+        'apache2_repos': TEST_PAYLOAD[0][3],
+        },
+    ])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    ''' integration test class for GithubOrgClient '''
+
+    @classmethod
+    def setUpClass(cls):
+        ''' sets up the test requirements '''
+        cls.get_patcher = patch('requests.get')
+        cls.mock_get = cls.get_patcher.start()
+        cls.mock_get.side_effect = [
+                MockResponse(cls.org_payload),
+                MockResponse(cls.repos_payload),
+                MockResponse(cls.apache2_repos)
+                ]
+
+    @classmethod
+    def tearDownClass(cls):
+        ''' tears down the integration test requirements '''
+        cls.get_patcher.stop()
+
+
+class MockResponse():
+    ''' class for MockResponse '''
+    def __init__(self, json_data):
+        ''' constructor '''
+        self.json_data = json_data
+
+    def json(self):
+        ''' return json_data '''
+        return self.json_data
 
 
 if __name__ == '__main__':
