@@ -3,7 +3,7 @@
 Module test_client: test module for client.py
 '''
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -26,6 +26,18 @@ class TestGithubOrgClient(unittest.TestCase):
         expected_url = GithubOrgClient.ORG_URL.format(org=org_name)
         mock_get_json.assert_called_once_with(expected_url)
         self.assertEqual(result, mock_get_json.return_value)
+
+    @parameterized.expand([
+        ('url_one', {'repos_url': 'http://url_one.com'}),
+        ('url_two', {'repos_url': 'http://url_two.com'})
+        ])
+    def test_public_repos_url(self, url_name, url):
+        ''' test method fo GitHubOrgClient._public_repos_url '''
+        with patch('client.GithubOrgClient.org',
+                   PropertyMock(return_value=url)):
+            result = GithubOrgClient(url_name)._public_repos_url
+
+            self.assertEqual(result, url.get('repos_url'))
 
 
 if __name__ == '__main__':
