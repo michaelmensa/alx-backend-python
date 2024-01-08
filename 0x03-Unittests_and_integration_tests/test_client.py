@@ -54,9 +54,9 @@ class TestGithubOrgClient(unittest.TestCase):
                    new_callable=PropertyMock) as mock_property:
             mock_property.return_value = url
             client = GithubOrgClient('testorg')
-            repos = client.public_repos(license='MIT')
+            repos = client.public_repos()
 
-            self.assertEqual(repos, ['repo1'])
+            self.assertEqual(repos, ['repo1', 'repo2', 'repo3'])
             mock_get_json.assert_called_once_with(url)
             mock_property.assert_called_once()
 
